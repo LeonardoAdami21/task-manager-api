@@ -1,11 +1,19 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateTaskDto } from './create-task.dto';
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+export class UpdateTaskDto{
+
     @ApiProperty({
-        type: Boolean,
-        example: true,
-        description: 'Define se a tarefa foi concluída',
+        type: String,
+        description: 'Title of the task',
+        example: 'Buy groceries'
     })
-    isFinished: boolean
+    title: string;
+
+    @ApiProperty({
+        type: String,
+        description: 'Description of the task',
+        example: 'Milk, eggs, bread'
+    })
+    description: string;
 }
