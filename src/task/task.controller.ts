@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards }
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guard/jwt.guard';
 import { RolesGuard } from '../guard/role.strategy';
+import { MarkedTaskDto } from './dto/marked-task.dto';
 
 @Controller('tasks')
 @ApiTags('Tasks')
@@ -40,6 +41,16 @@ export class TaskController {
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto, @Request() req: { user: { id: number } }) {
     return this.taskService.update(+id, updateTaskDto, req.user.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOkResponse({description: 'Tarefa marcada como concluída com sucesso'})
+  @ApiNotFoundResponse({description: 'Tarefa não encontrada'})
+  @ApiBadRequestResponse({description: 'Erro ao alterar tarefa'})
+  @Patch('finish/:id')
+  markedAsFinished(@Param('id') id: number, @Body() dto: MarkedTaskDto, @Request() req: { user: { id: number } }) {
+    return this.taskService.markedAsFinished(+id, dto, req.user.id);
   }
 
   @ApiBearerAuth()

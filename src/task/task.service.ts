@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable, InternalServerErrorException, 
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRepositoryInterface } from './repositories/task.repository.interface';
+import { MarkedTaskDto } from './dto/marked-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -48,6 +49,25 @@ export class TaskService {
         message: 'Task updated successfully'}
     } catch (error) {
       throw new BadRequestException('Failed to update task');
+    }
+  }
+
+  async markedAsFinished(id: number, dto: MarkedTaskDto, userId: number) {
+    try {
+      const user = await this.taskRepository.findUserById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      const task = await this.taskRepository.findById(id);
+      if (!task) {
+        throw new NotFoundException('Task not found');
+      }
+      await this.taskRepository.markedAsFinished(id, dto);
+      return {
+        message: 'Task marked as finished successfully'
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to mark task as finished');
     }
   }
 
