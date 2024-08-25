@@ -6,7 +6,7 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalSe
 import { JwtAuthGuard } from '../guard/jwt.guard';
 import { RolesGuard } from '../guard/role.strategy';
 
-@Controller('task')
+@Controller('tasks')
 @ApiTags('Tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
