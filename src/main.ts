@@ -12,14 +12,16 @@ async function bootstrap() {
   });
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Task Manager API')
+    .setContact('Leonardo Adami', 'https://github.com/LeonardoAdami21', 'leonardorossato21@gmail.com')
+    .setExternalDoc('Project Github', 'https://github.com/LeonardoAdami21/task-manager-api')
     .addBearerAuth()
     .setDescription('The task manager API description')
     .setVersion('1.0')
     .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('docs', app, document);
+  const document = SwaggerModule.createDocument(app, swaggerConfig,);
+  SwaggerModule.setup('api', app, document);
   await app.listen(appPort, () => {
-    console.log(`Application is running on: http://localhost:${appPort}/docs`);
+    console.log(`Application is running on: http://localhost:${appPort}/api`);
   });
 }
-bootstrap();
+void bootstrap();
