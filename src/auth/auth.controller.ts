@@ -62,11 +62,7 @@ export class AuthController {
   @ApiOkResponse({ description: 'Logout successfully' })
   @ApiBadRequestResponse({ description: 'Invalid token' })
   async logout(@Request() req: any) {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) {
-      throw new UnauthorizedException('Invalid token');
-    }
-    await this.authService.logout(token);
+   
     return {
       message: 'Logout successfully',
     };

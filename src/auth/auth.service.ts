@@ -23,7 +23,6 @@ export class AuthService {
     private readonly jwtStrategy: JwtStrategy,
   ) {}
 
-  private blacklistedTokens = new Set<string>();
   async login(dto: LoginAuthDto) {
     try {
       const user = await this.authRepository.findByEmail(dto.email);
@@ -68,15 +67,5 @@ export class AuthService {
     }
   }
 
-  async logout(token: string) {
-    this.blacklistToken(token); // Adiciona o token à blacklist, "excluindo-o" da lista de tokens válidos
-  }
 
-  private blacklistToken(token: string) {
-    this.blacklistedTokens.add(token);
-  }
-
-  isTokenBlacklisted(token: string): boolean {
-    return this.blacklistedTokens.has(token);
-  }
 }
