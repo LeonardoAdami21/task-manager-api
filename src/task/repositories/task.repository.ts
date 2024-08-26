@@ -43,7 +43,9 @@ export class TaskRepository {
   async update(id: number, dto: UpdateTaskDto) {
     return await this.dbClient.tasks.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+      },
     });
   }
 
