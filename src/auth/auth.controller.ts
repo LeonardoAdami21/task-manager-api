@@ -62,7 +62,6 @@ export class AuthController {
   @ApiOkResponse({ description: 'Logout successfully' })
   @ApiBadRequestResponse({ description: 'Invalid token' })
   async logout(@Request() req: any) {
-   
     return {
       message: 'Logout successfully',
     };

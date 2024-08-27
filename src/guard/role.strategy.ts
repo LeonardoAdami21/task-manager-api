@@ -10,7 +10,7 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userRole = request.user.role 
+    const userRole = request.user.role;
     const requiredRole = this.reflector.get<string>(
       'role',
       context.getHandler(),
@@ -21,6 +21,4 @@ export class RolesGuard implements CanActivate {
     // Check if the user has the required role or is an artist
     return userRole === requiredRole || userRole === 'user';
   }
-
-  
 }

@@ -16,7 +16,6 @@ export class TaskRepository {
     });
   }
 
-
   async findAll(userId: number) {
     return await this.dbClient.tasks.findMany({
       where: {
@@ -28,12 +27,12 @@ export class TaskRepository {
     const user = await this.dbClient.users.findFirst({
       where: {
         id: userId,
-      }
+      },
     });
     if (!user) {
       throw new Error('User not found');
     }
-    return user
+    return user;
   }
 
   async findById(id: number) {
@@ -49,10 +48,10 @@ export class TaskRepository {
     });
   }
 
-  async markedAsFinished( id: number, dto: MarkedTaskDto) {
+  async markedAsFinished(id: number, dto: MarkedTaskDto) {
     const task = await this.dbClient.tasks.findUnique({ where: { id } });
     if (!task) {
-      throw new Error('Task not found');  
+      throw new Error('Task not found');
     }
     return await this.dbClient.tasks.update({
       where: { id: task.id },

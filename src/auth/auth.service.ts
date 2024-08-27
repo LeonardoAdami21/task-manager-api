@@ -14,6 +14,13 @@ import { RegisterAuthDto } from './dto/register-auth.dto';
 import { AuthRepositoryInterface } from './repositories/auth.repository.interface';
 import { JwtStrategy } from '../guard/jwt.strategy';
 
+/**
+ * Initializes the AuthService instance.
+ *
+ * @param {AuthRepositoryInterface} authRepository - The repository for authentication operations.
+ * @param {JwtService} jwtService - The service for JWT operations.
+ * @param {JwtStrategy} jwtStrategy - The strategy for JWT authentication.
+ */
 @Injectable()
 export class AuthService {
   constructor(
@@ -66,6 +73,4 @@ export class AuthService {
       throw new BadRequestException('Invalid credentials');
     }
   }
-
-
 }
