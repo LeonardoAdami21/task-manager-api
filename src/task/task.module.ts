@@ -6,12 +6,16 @@ import { TaskRepository } from './repositories/task.repository';
 
 @Module({
   controllers: [TaskController],
-  providers: [TaskService, {
-    provide: 'dbClient',
-    useClass: PrismaClient
-  }, {
-    provide: 'task__repository',
-    useClass: TaskRepository
-  }],
+  providers: [
+    TaskService,
+    {
+      provide: 'dbClient',
+      useClass: PrismaClient,
+    },
+    {
+      provide: 'task__repository',
+      useClass: TaskRepository,
+    },
+  ],
 })
 export class TaskModule {}
