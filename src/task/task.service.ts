@@ -1,4 +1,10 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRepositoryInterface } from './repositories/task.repository.interface';
@@ -6,7 +12,10 @@ import { MarkedTaskDto } from './dto/marked-task.dto';
 
 @Injectable()
 export class TaskService {
-  constructor(@Inject('task__repository') private readonly taskRepository: TaskRepositoryInterface) {}
+  constructor(
+    @Inject('task__repository')
+    private readonly taskRepository: TaskRepositoryInterface,
+  ) {}
   async create(createTaskDto: CreateTaskDto, userId: number) {
     try {
       const user = await this.taskRepository.findUserById(userId);
@@ -26,13 +35,12 @@ export class TaskService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-    const tasks = await this.taskRepository.findAll(user.id);
-    return tasks
+      const tasks = await this.taskRepository.findAll(user.id);
+      return tasks;
     } catch (error) {
       throw new InternalServerErrorException('Failed to get all tasks');
     }
   }
-
 
   async update(id: number, updateTaskDto: UpdateTaskDto, userId: number) {
     try {
@@ -46,7 +54,8 @@ export class TaskService {
       }
       await this.taskRepository.update(id, updateTaskDto);
       return {
-        message: 'Task updated successfully'}
+        message: 'Task updated successfully',
+      };
     } catch (error) {
       throw new BadRequestException('Failed to update task');
     }
@@ -64,8 +73,8 @@ export class TaskService {
       }
       await this.taskRepository.markedAsFinished(id, dto);
       return {
-        message: 'Task marked as finished successfully'
-      }
+        message: 'Task marked as finished successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException('Failed to mark task as finished');
     }
@@ -83,8 +92,8 @@ export class TaskService {
       }
       await this.taskRepository.remove(id);
       return {
-        message: 'Task removed successfully'
-      }
+        message: 'Task removed successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException('Failed to remove task');
     }
