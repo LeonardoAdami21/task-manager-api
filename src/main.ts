@@ -21,7 +21,11 @@ async function bootstrap() {
       'Project Github',
       'https://github.com/LeonardoAdami21/task-manager-api',
     )
-    .addBearerAuth()
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    })
     .setDescription('The task manager API description')
     .setVersion('1.0')
     .build();
