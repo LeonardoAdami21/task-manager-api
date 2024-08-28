@@ -1,10 +1,11 @@
-import { Inject } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { PrismaClient, Tasks } from '@prisma/client';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 import { MarkedTaskDto } from '../dto/marked-task.dto';
+import { TaskRepositoryInterface } from './task.repository.interface';
 
-export class TaskRepository {
+export class TaskRepository implements TaskRepositoryInterface {
   constructor(@Inject('dbClient') private readonly dbClient: PrismaClient) {}
 
   async create(dto: CreateTaskDto, userId: number) {
@@ -23,19 +24,19 @@ export class TaskRepository {
       },
     });
   }
-  async findUserById(userId: number) {
+  async findUserById(userId: number){
     const user = await this.dbClient.users.findFirst({
       where: {
         id: userId,
       },
     });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
     return user;
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<Tasks> {
     return await this.dbClient.tasks.findUnique({ where: { id } });
   }
 

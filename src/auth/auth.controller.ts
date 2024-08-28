@@ -58,7 +58,6 @@ export class AuthController {
   @Delete('logout')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
-  @Role(userEnumRole.USER)
   @ApiOkResponse({ description: 'Logout successfully' })
   @ApiBadRequestResponse({ description: 'Invalid token' })
   async logout(@Request() req: any) {
