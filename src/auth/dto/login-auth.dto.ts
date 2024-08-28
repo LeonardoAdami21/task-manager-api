@@ -7,7 +7,6 @@ export class LoginAuthDto {
     example: 'w5Jwz@example.com',
     description: 'Email do usuário',
   })
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -16,6 +15,5 @@ export class LoginAuthDto {
     example: '123456',
     description: 'Senha do usuário',
   })
-  @IsNotEmpty()
   password: string;
 }

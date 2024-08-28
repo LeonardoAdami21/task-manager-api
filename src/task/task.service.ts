@@ -57,7 +57,19 @@ export class TaskService {
         message: 'Task updated successfully',
       };
     } catch (error) {
-      throw new BadRequestException('Failed to update task');
+      throw new BadRequestException('Failed to update task' + error);
+    }
+  }
+
+  async findById(id: number) {
+    try {
+      const task = await this.taskRepository.findById(id);
+      if (!task) {
+        throw new NotFoundException('Task not found');
+      }
+      return task;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to get task');
     }
   }
 
@@ -76,7 +88,9 @@ export class TaskService {
         message: 'Task marked as finished successfully',
       };
     } catch (error) {
-      throw new InternalServerErrorException('Failed to mark task as finished');
+      throw new InternalServerErrorException(
+        'Failed to mark task as finished' + error,
+      );
     }
   }
 
@@ -96,6 +110,18 @@ export class TaskService {
       };
     } catch (error) {
       throw new InternalServerErrorException('Failed to remove task');
+    }
+  }
+
+  async findUserById(userId: number) {
+    try {
+      const user = await this.taskRepository.findUserById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find user' + error);
     }
   }
 }
