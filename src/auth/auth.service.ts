@@ -34,7 +34,7 @@ export class AuthService {
     try {
       const user = await this.authRepository.findByEmail(dto.email);
       if (!user) {
-        throw new Error('User not found');
+        throw new NotFoundException('User not found');
       }
       const isPasswordValid = await bcrypt.compare(dto.password, user.password);
       if (!isPasswordValid) {
@@ -71,6 +71,18 @@ export class AuthService {
       return newUser;
     } catch (error) {
       throw new BadRequestException('Invalid credentials');
+    }
+  }
+
+  async findUserByEmail(email: string) {
+    try {
+      const user = await this.authRepository.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find user' + error);
     }
   }
 }

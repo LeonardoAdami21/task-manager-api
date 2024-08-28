@@ -6,6 +6,7 @@ export class RegisterAuthDto {
     type: String,
     example: 'Henrique',
     description: 'Nome do usuário',
+    required: true,
   })
   @IsNotEmpty()
   name: string;
@@ -15,6 +16,7 @@ export class RegisterAuthDto {
     example: 'w5Jwz@example.com',
     description: 'Email do usuário',
   })
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -22,6 +24,7 @@ export class RegisterAuthDto {
     type: String,
     example: '123456',
     description: 'Senha do usuário',
+    required: true,
   })
   @IsNotEmpty()
   password: string;
