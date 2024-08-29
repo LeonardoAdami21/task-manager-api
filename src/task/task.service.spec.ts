@@ -61,7 +61,7 @@ describe.skip('Task Service', () => {
   });
   it('should return a error if user not found', async () => {
     try {
-      const tasks = await taskService.findAll(2);
+      const tasks = await taskService.findAll(3);
       expect(tasks).toBe(tasks);
     } catch (error) {
       expect(error).toBe(error);
@@ -74,7 +74,7 @@ describe.skip('Task Service', () => {
       description: 'this is a test',
     };
 
-    const update = await taskService.update(21, dto, 1);
+    const update = await taskService.update(1, dto, 1);
     expect(update).toBeDefined();
   });
   it('should return a error if try to update a task that does not exist', async () => {
@@ -107,7 +107,7 @@ describe.skip('Task Service', () => {
     const dto: MarkedTaskDto = {
       isFinished: true,
     };
-    const update = await taskService.markedAsFinished(21, dto, 1);
+    const update = await taskService.markedAsFinished(1, dto, 1);
     expect(update).toBeDefined();
   });
   it('should return a error if user not found to mark a task as finished', async () => {
@@ -133,12 +133,12 @@ describe.skip('Task Service', () => {
     }
   });
   it('should remove a task', async () => {
-    const remove = await taskService.remove(21, 1);
+    const remove = await taskService.remove(1, 1);
     expect(remove).toBeDefined();
   });
   it('should return a error if user not found to remove a task', async () => {
     try {
-      const remove = await taskService.remove(21, 10);
+      const remove = await taskService.remove(5, 10);
       expect(remove).toBe(remove);
     } catch (error) {
       expect(error).toBe(error);
