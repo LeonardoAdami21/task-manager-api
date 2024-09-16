@@ -28,4 +28,12 @@ export class RegisterAuthDto {
   })
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'manager',
+    description: 'Tipo de usuário',
+    required: true,
+  })
+  role: string;
 }

@@ -56,17 +56,25 @@ export class AuthService {
 
   async register(dto: RegisterAuthDto) {
     try {
-      const user = await this.authRepository.findByEmail(dto.email);
+      const { password, email, role } = dto;
+      if (!password || !email || !role) {
+        throw new BadRequestException('Missing required fields');
+      }
+      if (role !== 'manager' && role !== 'user') {
+        throw new BadRequestException('Invalid role');
+      }
+      const user = await this.authRepository.findByEmail(email);
       if (user) {
         throw new Error('User already exists');
       }
-      const hashPassword = await bcrypt.hash(dto.password, 10);
+      const hashPassword = await bcrypt.hash(password, 10);
       if (!hashPassword) {
         throw new ConflictException('Failed to hash password');
       }
       const newUser = await this.authRepository.create({
         ...dto,
         password: hashPassword,
+        role,
       });
       return newUser;
     } catch (error) {

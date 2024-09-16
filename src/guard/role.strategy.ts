@@ -19,6 +19,11 @@ export class RolesGuard implements CanActivate {
     if (!requiredRole) return true;
 
     // Check if the user has the required role or is an artist
-    return userRole === requiredRole || userRole === 'user';
+    return (
+      userRole === requiredRole ||
+      userRole === 'user' ||
+      userRole === 'admin' ||
+      userRole === 'manager'
+    );
   }
 }
