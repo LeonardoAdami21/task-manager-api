@@ -8,12 +8,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { jwtSecret, passwordSecret } from '../env/envoriment';
-import { LoginAuthDto } from './dto/login-auth.dto';
-import { RegisterAuthDto } from './dto/register-auth.dto';
-import { AuthRepositoryInterface } from './repositories/auth.repository.interface';
+import { jwtSecret } from '../env/envoriment';
 import { JwtStrategy } from '../guard/jwt.strategy';
 import { userEnumRole } from '@prisma/client';
+import { AdminRepositoryInterface } from './repositories/admin.repository.interface';
+import { LoginAdminDto } from './dto/login-admin.dto';
+import { RegisterAdminDto } from './dto/register-admin.dto';
 
 /**
  * Initializes the AuthService instance.
@@ -23,17 +23,17 @@ import { userEnumRole } from '@prisma/client';
  * @param {JwtStrategy} jwtStrategy - The strategy for JWT authentication.
  */
 @Injectable()
-export class AuthService {
+export class AdminService {
   constructor(
-    @Inject('auth__repository')
-    private readonly authRepository: AuthRepositoryInterface,
+    @Inject('admin__repository')
+    private readonly adminRepository: AdminRepositoryInterface,
     private readonly jwtService: JwtService,
     private readonly jwtStrategy: JwtStrategy,
   ) {}
 
-  async login(dto: LoginAuthDto) {
+  async login(dto: LoginAdminDto) {
     try {
-      const user = await this.authRepository.findByEmail(dto.email);
+      const user = await this.adminRepository.findByEmail(dto.email);
       if (!user) {
         throw new NotFoundException('User not found');
       }
@@ -55,16 +55,16 @@ export class AuthService {
     }
   }
 
-  async register(dto: RegisterAuthDto) {
+  async register(dto: RegisterAdminDto) {
     try {
       const { password, email, role } = dto;
       if (!password || !email || !role) {
         throw new BadRequestException('Missing required fields');
       }
-      if (role !== userEnumRole.MANAGER && role !== userEnumRole.USER) {
+      if (role !== userEnumRole.ADMIN) {
         throw new BadRequestException('Invalid role');
       }
-      const user = await this.authRepository.findByEmail(email);
+      const user = await this.adminRepository.findByEmail(email);
       if (user) {
         throw new Error('User already exists');
       }
@@ -72,7 +72,7 @@ export class AuthService {
       if (!hashPassword) {
         throw new ConflictException('Failed to hash password');
       }
-      const newUser = await this.authRepository.create({
+      const newUser = await this.adminRepository.create({
         ...dto,
         password: hashPassword,
         role,
@@ -85,7 +85,7 @@ export class AuthService {
 
   async findUserByEmail(email: string) {
     try {
-      const user = await this.authRepository.findByEmail(email);
+      const user = await this.adminRepository.findByEmail(email);
       if (!user) {
         throw new NotFoundException('User not found');
       }

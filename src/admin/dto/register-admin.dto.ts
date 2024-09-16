@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { userEnumRole } from '@prisma/client';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class RegisterAuthDto {
+export class RegisterAdminDto {
   @ApiProperty({
     type: String,
     example: 'Henrique',
@@ -16,9 +16,10 @@ export class RegisterAuthDto {
     type: String,
     example: 'w5Jwz@example.com',
     description: 'Email do usuário',
+    required: true,
   })
-  @IsNotEmpty()
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty({
@@ -31,11 +32,11 @@ export class RegisterAuthDto {
   password: string;
 
   @ApiProperty({
-    type: String,
     enum: userEnumRole,
-    example: 'manager',
+    example: 'admin',
     description: 'Tipo de usuário',
     required: true,
   })
+  @IsNotEmpty()
   role: userEnumRole;
 }
