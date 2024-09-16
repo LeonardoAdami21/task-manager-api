@@ -19,6 +19,12 @@ enum userEnumRole{
   MANAGER
 }
 
+enum taskPriorityEnum {
+  LOW
+  MEDIUM
+  HIGHG
+}
+
 model Users{
   id Int @id @default(autoincrement())
   name String @db.VarChar(200)
@@ -34,7 +40,10 @@ model Tasks{
   id Int @id @default(autoincrement())
   title String @db.VarChar(200)
   description String @db.VarChar(200)
-  isFinished Boolean @default(false)
+  priority String
+  status  String
   userId Int 
   user Users @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

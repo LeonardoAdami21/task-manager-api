@@ -2,9 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class MarkedTaskDto {
   @ApiProperty({
-    type: Boolean,
-    description: 'Is the task finished?',
-    example: true,
+    type: String,
+    description: 'Is the task completed?',
+    example: 'completed',
   })
-  isFinished: boolean;
+  status: string;
 }
