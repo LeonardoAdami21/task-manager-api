@@ -1,8 +1,8 @@
 {
   "name": "task-manager-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Api for task manager",
+  "author": "Leonardo Adami",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
