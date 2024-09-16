@@ -72,6 +72,7 @@ export class ReportsService {
         id: task.id,
         title: task.title,
         description: task.description,
+        priority: task.priority,
         status: task.status,
         createdAt: task.createdAt,
         updatedAt: task.updatedAt,
