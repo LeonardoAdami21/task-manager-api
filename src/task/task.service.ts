@@ -35,12 +35,13 @@ export class TaskService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      const tasks = await this.taskRepository.findAll(user.id);
+      const tasks = await this.taskRepository.findAllUserTasks(user.id);
       return tasks;
     } catch (error) {
       throw new InternalServerErrorException('Failed to get all tasks');
     }
   }
+
 
   async update(id: number, updateTaskDto: UpdateTaskDto, userId: number) {
     try {
