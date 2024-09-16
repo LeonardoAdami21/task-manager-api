@@ -21,9 +21,6 @@ export class TaskRepository implements TaskRepositoryInterface {
     return await this.dbClient.tasks.findMany({
       where: {
         userId,
-        user: {
-          role: userEnumRole.USER,
-        },
       },
     });
   }
@@ -60,7 +57,7 @@ export class TaskRepository implements TaskRepositoryInterface {
     }
     return await this.dbClient.tasks.update({
       where: { id: task.id },
-      data: { isFinished: dto.isFinished },
+      data: { status: dto.status },
     });
   }
   async remove(id: number) {

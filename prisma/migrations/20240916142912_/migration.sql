@@ -1,6 +1,9 @@
 -- CreateEnum
 CREATE TYPE "userEnumRole" AS ENUM ('USER', 'ADMIN', 'MANAGER');
 
+-- CreateEnum
+CREATE TYPE "taskPriorityEnum" AS ENUM ('LOW', 'MEDIUM', 'HIGHG');
+
 -- CreateTable
 CREATE TABLE "Users" (
     "id" SERIAL NOT NULL,
@@ -19,8 +22,11 @@ CREATE TABLE "Tasks" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(200) NOT NULL,
     "description" VARCHAR(200) NOT NULL,
-    "isFinished" BOOLEAN NOT NULL DEFAULT false,
+    "priority" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Tasks_pkey" PRIMARY KEY ("id")
 );
