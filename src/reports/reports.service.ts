@@ -32,9 +32,15 @@ export class ReportsService {
   async generateCsvReports(tasks: Tasks[]): Promise<any> {
     const csvData: string[] = [];
     csvData.push(
-      ['id', 'title', 'description', 'status', 'createdAt', 'updatedAt'].join(
-        ',',
-      ),
+      [
+        'id',
+        'title',
+        'description',
+        'priority',
+        'status',
+        'createdAt',
+        'updatedAt',
+      ].join(','),
     );
     tasks.forEach((task) => {
       csvData.push(
@@ -42,6 +48,7 @@ export class ReportsService {
           task.id,
           task.title,
           task.description,
+          task.priority,
           task.status,
           task.createdAt,
           task.updatedAt,
