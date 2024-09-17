@@ -18,6 +18,18 @@ export class TaskService {
   ) {}
   async create(createTaskDto: CreateTaskDto, userId: number) {
     try {
+      const { title, description, priority, status } = createTaskDto;
+      if (!title || !description || !priority || !status) {
+        throw new BadRequestException('All fields are required');
+      }
+      const validationPriority = priority === 'low' || priority === 'medium' || priority === 'high';
+      if (!validationPriority) {
+        throw new BadRequestException('Priority must be low, medium or high');
+      }
+      const validationStatus = status === 'todo' || status === 'doing' || status === 'done';
+      if (!validationStatus) {
+        throw new BadRequestException('Status must be todo, doing or done');
+      }
       const user = await this.taskRepository.findUserById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
@@ -42,7 +54,6 @@ export class TaskService {
     }
   }
 
-
   async update(id: number, updateTaskDto: UpdateTaskDto, userId: number) {
     try {
       const user = await this.taskRepository.findUserById(userId);
@@ -52,6 +63,10 @@ export class TaskService {
       const task = await this.taskRepository.findById(id);
       if (!task) {
         throw new NotFoundException('Task not found');
+      }
+      const validationPriority = updateTaskDto.priority === 'low' || updateTaskDto.priority === 'medium' || updateTaskDto.priority === 'high';
+      if (!validationPriority) {
+        throw new BadRequestException('Priority must be low, medium or high');
       }
       await this.taskRepository.update(id, updateTaskDto);
       return {

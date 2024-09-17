@@ -17,14 +17,14 @@ export class CreateTaskDto {
 
   @ApiProperty({
     type: String,
-    example : ['low', 'medium', 'high'],
+    example : 'low',
     description: 'Prioridade da tarefa',
   })
   priority: string;
 
   @ApiProperty({
     type: String,
-    example: ['pending', 'completed'],
+    example: 'todo',
     description: 'Status da tarefa',
   })
   status: string;
