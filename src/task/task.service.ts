@@ -22,13 +22,19 @@ export class TaskService {
       if (!title || !description || !priority || !status) {
         throw new BadRequestException('All fields are required');
       }
-      const validationPriority = priority === 'low' || priority === 'medium' || priority === 'high';
+      const validationPriority =
+        priority === 'low' || priority === 'medium' || priority === 'high';
       if (!validationPriority) {
         throw new BadRequestException('Priority must be low, medium or high');
       }
-      const validationStatus = status === 'todo' || status === 'doing' || status === 'done';
+      const validationStatus =
+        status === 'pending' ||
+        status === 'in_progress' ||
+        status === 'completed';
       if (!validationStatus) {
-        throw new BadRequestException('Status must be todo, doing or done');
+        throw new BadRequestException(
+          'Status must be pending, in_progress or completed',
+        );
       }
       const user = await this.taskRepository.findUserById(userId);
       if (!user) {
@@ -64,7 +70,10 @@ export class TaskService {
       if (!task) {
         throw new NotFoundException('Task not found');
       }
-      const validationPriority = updateTaskDto.priority === 'low' || updateTaskDto.priority === 'medium' || updateTaskDto.priority === 'high';
+      const validationPriority =
+        updateTaskDto.priority === 'low' ||
+        updateTaskDto.priority === 'medium' ||
+        updateTaskDto.priority === 'high';
       if (!validationPriority) {
         throw new BadRequestException('Priority must be low, medium or high');
       }

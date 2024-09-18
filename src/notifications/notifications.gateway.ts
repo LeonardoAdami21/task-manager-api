@@ -26,12 +26,12 @@ export class NotificationsGateway
     this.logger.log('Initialized');
   }
 
-  handleConnection(client: any, ...args: any[]) {
+  handleConnection(client: Socket, ...args: any[]) {
     try {
       const token = client.handshake.headers.authorization?.split(' ')[1];
       const payload = this.jwtService.verify(token);
-      client.user = payload;
-      this.logger.log(`Client connected: ${client.id}`);
+      client.data.user = payload;
+      this.logger.log(`Client connected: ${payload.name}`);
     } catch (error) {
       this.logger.error('Invalid token');
       client.disconnect();
