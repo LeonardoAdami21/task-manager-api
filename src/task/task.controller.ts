@@ -31,6 +31,8 @@ import { TaskService } from './task.service';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  @Role('USER')
+  @Role('MANAGER')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiCreatedResponse({ description: 'Tarefa criada com sucesso' })
