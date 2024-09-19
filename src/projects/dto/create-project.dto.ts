@@ -15,9 +15,19 @@ export class CreateProjectDto {
   })
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '01/01/2022',
+    type: Date,
+    description: 'The initial date of the project',
+    required: true,
+  })
   initialDate: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '01/01/2022',
+    type: Date,
+    description: 'The final date of the project',
+    required: true,
+  })
   finalDate: Date;
 }

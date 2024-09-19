@@ -31,7 +31,6 @@ import { TaskService } from './task.service';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
- 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiCreatedResponse({ description: 'Tarefa criada com sucesso' })
@@ -45,12 +44,11 @@ export class TaskController {
     return this.taskService.create(createTaskDto, req.user.id);
   }
 
-  @Role('USER')
   @ApiBearerAuth()
+  @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOkResponse({ description: 'Tarefas retornadas com sucesso' })
   @ApiInternalServerErrorResponse({ description: 'Erro ao retornar tarefas' })
-  @Get()
   findAll(@Request() req: { user: { id: number } }) {
     return this.taskService.findAll(req.user.id);
   }
