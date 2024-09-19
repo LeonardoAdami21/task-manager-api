@@ -32,6 +32,20 @@ model Users{
   password String @db.VarChar(200)
   role userEnumRole @default(USER)
   tasks Tasks[]
+  Projects Projects[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Projects{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(200)
+  description String
+  initialDate DateTime? @default(now())
+  finalDate DateTime?
+  userId Int
+  user   Users @relation(fields: [userId], references: [id])
+  tasks Tasks[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -44,6 +58,8 @@ model Tasks{
   status  String
   userId Int 
   user Users @relation(fields: [userId], references: [id])
+  projectId Int
+  project Projects @relation(fields: [projectId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
