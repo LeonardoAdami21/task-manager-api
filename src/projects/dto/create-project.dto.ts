@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty({
@@ -15,9 +16,21 @@ export class CreateProjectDto {
   })
   description: string;
 
-  @ApiProperty()
+  @IsDate()
+  @ApiProperty({
+    example: '01/01/2022',
+    type: Date,
+    description: 'The initial date of the project',
+    required: true,
+  })
   initialDate: Date;
 
-  @ApiProperty()
+  @IsDate()
+  @ApiProperty({
+    example: '01/01/2022',
+    type: Date,
+    description: 'The final date of the project',
+    required: true,
+  })
   finalDate: Date;
 }

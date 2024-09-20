@@ -30,7 +30,7 @@ model Users{
   name String @db.VarChar(200)
   email String @unique @db.VarChar(200)
   password String @db.VarChar(200)
-  role userEnumRole @default(USER)
+  role userEnumRole 
   tasks Tasks[]
   Projects Projects[]
   createdAt DateTime @default(now())
@@ -41,8 +41,8 @@ model Projects{
   id Int @id @default(autoincrement())
   name String @db.VarChar(200)
   description String
-  initialDate DateTime? @default(now())
-  finalDate DateTime?
+  initialDate DateTime
+  finalDate DateTime
   userId Int
   user   Users @relation(fields: [userId], references: [id])
   tasks Tasks[]
