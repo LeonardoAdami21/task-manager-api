@@ -44,7 +44,7 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
       throw new NotFoundException('User not found');
     }
 
-    return await this.dbClient.projects.findMany({
+    return await this.dbClient.projects.findFirst({
       where: {
         userId: user.id,
       },
@@ -79,7 +79,15 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
     });
   }
 
-  async delete(id: number) {
+  async delete(id: number, userId: number) {
+    const user = await this.dbClient.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('User not fount');
+    }
     return await this.dbClient.projects.delete({
       where: {
         id,
