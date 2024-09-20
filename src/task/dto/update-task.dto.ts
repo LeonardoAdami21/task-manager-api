@@ -15,4 +15,11 @@ export class UpdateTaskDto {
     example: 'Milk, eggs, bread',
   })
   description: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'Priority of the task',
+    example: 'low',
+  })
+  priority: string;
 }

@@ -1,30 +1,30 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { TaskService } from './task.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiBody,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Role } from 'src/guard/role.guard';
 import { JwtAuthGuard } from '../guard/jwt.guard';
 import { RolesGuard } from '../guard/role.strategy';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { MarkedTaskDto } from './dto/marked-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskService } from './task.service';
 
 @Controller('tasks')
 @ApiTags('Tasks')
@@ -45,10 +45,10 @@ export class TaskController {
   }
 
   @ApiBearerAuth()
+  @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOkResponse({ description: 'Tarefas retornadas com sucesso' })
   @ApiInternalServerErrorResponse({ description: 'Erro ao retornar tarefas' })
-  @Get()
   findAll(@Request() req: { user: { id: number } }) {
     return this.taskService.findAll(req.user.id);
   }

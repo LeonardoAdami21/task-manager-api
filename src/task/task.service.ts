@@ -18,6 +18,24 @@ export class TaskService {
   ) {}
   async create(createTaskDto: CreateTaskDto, userId: number) {
     try {
+      const { title, description, priority, status } = createTaskDto;
+      if (!title || !description || !priority || !status) {
+        throw new BadRequestException('All fields are required');
+      }
+      const validationPriority =
+        priority === 'low' || priority === 'medium' || priority === 'high';
+      if (!validationPriority) {
+        throw new BadRequestException('Priority must be low, medium or high');
+      }
+      const validationStatus =
+        status === 'pending' ||
+        status === 'in_progress' ||
+        status === 'completed';
+      if (!validationStatus) {
+        throw new BadRequestException(
+          'Status must be pending, in_progress or completed',
+        );
+      }
       const user = await this.taskRepository.findUserById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
@@ -35,7 +53,7 @@ export class TaskService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      const tasks = await this.taskRepository.findAll(user.id);
+      const tasks = await this.taskRepository.findAllUserTasks(user.id);
       return tasks;
     } catch (error) {
       throw new InternalServerErrorException('Failed to get all tasks');
@@ -51,6 +69,13 @@ export class TaskService {
       const task = await this.taskRepository.findById(id);
       if (!task) {
         throw new NotFoundException('Task not found');
+      }
+      const validationPriority =
+        updateTaskDto.priority === 'low' ||
+        updateTaskDto.priority === 'medium' ||
+        updateTaskDto.priority === 'high';
+      if (!validationPriority) {
+        throw new BadRequestException('Priority must be low, medium or high');
       }
       await this.taskRepository.update(id, updateTaskDto);
       return {

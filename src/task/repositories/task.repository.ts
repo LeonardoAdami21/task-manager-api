@@ -1,5 +1,5 @@
 import { Inject, NotFoundException } from '@nestjs/common';
-import { PrismaClient, Tasks } from '@prisma/client';
+import { PrismaClient, Tasks, userEnumRole } from '@prisma/client';
 import { CreateTaskDto } from '../dto/create-task.dto';
 import { UpdateTaskDto } from '../dto/update-task.dto';
 import { MarkedTaskDto } from '../dto/marked-task.dto';
@@ -17,14 +17,15 @@ export class TaskRepository implements TaskRepositoryInterface {
     });
   }
 
-  async findAll(userId: number) {
+  async findAllUserTasks(userId: number) {
     return await this.dbClient.tasks.findMany({
       where: {
         userId,
       },
     });
   }
-  async findUserById(userId: number){
+
+  async findUserById(userId: number) {
     const user = await this.dbClient.users.findFirst({
       where: {
         id: userId,
@@ -56,7 +57,7 @@ export class TaskRepository implements TaskRepositoryInterface {
     }
     return await this.dbClient.tasks.update({
       where: { id: task.id },
-      data: { isFinished: dto.isFinished },
+      data: { status: dto.status },
     });
   }
   async remove(id: number) {

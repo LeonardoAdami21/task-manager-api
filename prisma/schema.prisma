@@ -15,6 +15,14 @@ datasource db {
 
 enum userEnumRole{
   USER
+  ADMIN
+  MANAGER
+}
+
+enum taskPriorityEnum {
+  LOW
+  MEDIUM
+  HIGHG
 }
 
 model Users{
@@ -22,7 +30,21 @@ model Users{
   name String @db.VarChar(200)
   email String @unique @db.VarChar(200)
   password String @db.VarChar(200)
-  role userEnumRole @default(USER)
+  role userEnumRole 
+  tasks Tasks[]
+  Projects Projects[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Projects{
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(200)
+  description String
+  initialDate DateTime
+  finalDate DateTime
+  userId Int
+  user   Users @relation(fields: [userId], references: [id])
   tasks Tasks[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -32,7 +54,12 @@ model Tasks{
   id Int @id @default(autoincrement())
   title String @db.VarChar(200)
   description String @db.VarChar(200)
-  isFinished Boolean @default(false)
+  priority String
+  status  String
   userId Int 
   user Users @relation(fields: [userId], references: [id])
+  projectId Int
+  project Projects @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

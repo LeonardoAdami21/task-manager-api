@@ -15,4 +15,24 @@ export class CreateTaskDto {
   })
   description: string;
 
+  @ApiProperty({
+    type: Number,
+    description: 'Id do Projeto',
+    example: 1,
+  })
+  projectId: number;
+
+  @ApiProperty({
+    type: String,
+    example: 'low or medium or high',
+    description: 'Prioridade da tarefa',
+  })
+  priority: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'pending or in_progress or completed',
+    description: 'Status da tarefa',
+  })
+  status: string;
 }
