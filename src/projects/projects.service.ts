@@ -23,11 +23,11 @@ export class ProjectsService {
           'Initial date must be less than final date',
         );
       }
-
       const user = await this.projectsRepository.findUserProjectsById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
       }
+
       const project = await this.projectsRepository.create(
         {
           name,
@@ -76,33 +76,26 @@ export class ProjectsService {
     }
   }
 
-  async update(id: number, dto: CreateProjectDto, userId: number) {
+  async update(id: number, dto: CreateProjectDto) {
     try {
-      const user = await this.projectsRepository.findUserProjectsById(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
       const project = await this.projectsRepository.findById(id);
       if (!project) {
         throw new NotFoundException('Project not found');
       }
-      return await this.projectsRepository.update(id, dto, user.id);
+      return await this.projectsRepository.update(id, dto);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
   }
 
-  async delete(id: number, userId: number) {
+  async delete(id: number) {
     try {
-      const user = await this.projectsRepository.findUserProjectsById(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
+
       const project = await this.projectsRepository.findById(id);
       if (!project) {
         throw new NotFoundException('Project not found');
       }
-      return await this.projectsRepository.delete(id, user.id);
+      return await this.projectsRepository.delete(id);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

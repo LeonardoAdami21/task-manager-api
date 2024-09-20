@@ -7,6 +7,6 @@ export interface ProjectsRepositoryInterface {
   findAll(): Promise<Projects[]>;
   findUserProjectsById(userId: number);
   findById(id: number): Promise<Projects>;
-  update(id: number, dto: UpdateProjectDto, userId: number): Promise<any>;
-  delete(id: number, userId: number): Promise<Projects>;
+  update(id: number, dto: UpdateProjectDto): Promise<any>;
+  delete(id: number): Promise<Projects>;
 }
