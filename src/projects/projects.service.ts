@@ -18,14 +18,9 @@ export class ProjectsService {
   async create(dto: CreateProjectDto, userId: number) {
     try {
       const { name, description, initialDate, finalDate } = dto;
-      const startDate = new Date(initialDate.toLocaleDateString());
-      const endDate = new Date(finalDate.toLocaleDateString());
-      if (!name || !description || !startDate || !endDate) {
-        throw new BadRequestException('Missing required fields');
-      }
-      if (startDate > endDate) {
+      if (initialDate > finalDate) {
         throw new BadRequestException(
-          'Initial date cannot be greater than final date',
+          'Initial date must be less than final date',
         );
       }
 
@@ -37,8 +32,8 @@ export class ProjectsService {
         {
           name,
           description,
-          initialDate: startDate,
-          finalDate: endDate,
+          initialDate: dto.initialDate ? new Date(dto.initialDate) : new Date(),
+          finalDate: dto.finalDate ? new Date(dto.finalDate) : null,
         },
         user.id,
       );
@@ -99,7 +94,7 @@ export class ProjectsService {
 
   async delete(id: number, userId: number) {
     try {
-      const user = await this.projectsRepository.findUserProjectsById(id);
+      const user = await this.projectsRepository.findUserProjectsById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
       }

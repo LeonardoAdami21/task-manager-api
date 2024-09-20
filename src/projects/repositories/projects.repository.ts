@@ -9,7 +9,7 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
 
   async create(dto: CreateProjectDto, userId: number) {
     const { name, description, initialDate, finalDate } = dto;
-    const user = await this.dbClient.users.findUnique({
+    const user = await this.dbClient.users.findFirst({
       where: {
         id: userId,
       },
@@ -65,7 +65,7 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
       where: {
         id: userId,
       },
-    })
+    });
     return await this.dbClient.projects.update({
       where: {
         id,
