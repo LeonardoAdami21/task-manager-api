@@ -41,7 +41,11 @@ export class TaskController {
     @Body() createTaskDto: CreateTaskDto,
     @Request() req: { user: { id: number } },
   ) {
-    return this.taskService.create(createTaskDto, req.user.id);
+  
+    return this.taskService.create({
+      ...createTaskDto,
+      projectId: +createTaskDto.projectId,
+    }, req.user.id);
   }
 
   @ApiBearerAuth()

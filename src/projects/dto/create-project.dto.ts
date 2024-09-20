@@ -18,7 +18,7 @@ export class CreateProjectDto {
 
   @IsDate()
   @ApiProperty({
-    example: '01/01/2022',
+    example: '2022-01-01',
     type: Date,
     description: 'The initial date of the project',
     required: true,
@@ -27,7 +27,7 @@ export class CreateProjectDto {
 
   @IsDate()
   @ApiProperty({
-    example: '01/01/2022',
+    example: '2022-01-01',
     type: Date,
     description: 'The final date of the project',
     required: true,
