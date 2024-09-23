@@ -88,14 +88,20 @@ export class ProjectsService {
     }
   }
 
-  async delete(id: number) {
+  async delete(id: number, userId: number) {
     try {
-
+      const user = await this.projectsRepository.findUserProjectsById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
       const project = await this.projectsRepository.findById(id);
       if (!project) {
         throw new NotFoundException('Project not found');
       }
-      return await this.projectsRepository.delete(id);
+      await this.projectsRepository.delete(id);
+      return {
+        message: 'Project deleted successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

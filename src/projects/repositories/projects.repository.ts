@@ -50,7 +50,7 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
   async findById(id: number) {
     const project = await this.dbClient.projects.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
     if (!project) {
@@ -63,9 +63,12 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
     const { name, description, initialDate, finalDate } = dto;
     const project = await this.dbClient.projects.findUnique({
       where: {
-        id,
+        id: id,
       },
     });
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
     return await this.dbClient.projects.update({
       where: {
         id,

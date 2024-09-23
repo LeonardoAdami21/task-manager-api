@@ -68,7 +68,7 @@ export class ProjectsController {
     @Body() dto: CreateProjectDto,
     @Param('id') id: number,
   ) {
-    return this.projectsService.update(id, dto);
+    return this.projectsService.update(+id, dto);
   }
 
   @ApiOkResponse({ description: 'Project found successfully' })
@@ -87,7 +87,7 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Role('MANAGER')
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.projectsService.delete(+id);
+  delete(@Param('id') id: number, @Request() req: { user: { id: number } }) {
+    return this.projectsService.delete(+id, req.user.id);
   }
 }
