@@ -44,28 +44,31 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
       throw new NotFoundException('User not found');
     }
 
-    return await this.dbClient.projects.findFirst({
-      where: {
-        userId: user.id,
-      },
-    });
+    return user;
   }
 
   async findById(id: number) {
-    return await this.dbClient.projects.findUnique({
+    const project = await this.dbClient.projects.findUnique({
       where: {
         id,
       },
     });
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return project;
   }
 
-  async update(id: number, dto: CreateProjectDto, userId: number) {
+  async update(id: number, dto: CreateProjectDto) {
     const { name, description, initialDate, finalDate } = dto;
-    const user = await this.dbClient.users.findUnique({
+    const project = await this.dbClient.projects.findUnique({
       where: {
-        id: userId,
+        id: id,
       },
     });
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
     return await this.dbClient.projects.update({
       where: {
         id,
@@ -79,14 +82,14 @@ export class ProjectsRepository implements ProjectsRepositoryInterface {
     });
   }
 
-  async delete(id: number, userId: number) {
-    const user = await this.dbClient.users.findUnique({
+  async delete(id: number) {
+    const project = await this.dbClient.projects.findUnique({
       where: {
-        id: userId,
+        id,
       },
     });
-    if (!user) {
-      throw new NotFoundException('User not fount');
+    if (!project) {
+      throw new NotFoundException('Project not found');
     }
     return await this.dbClient.projects.delete({
       where: {

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber } from 'class-validator';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -15,6 +16,7 @@ export class CreateTaskDto {
   })
   description: string;
 
+  @IsNumber()
   @ApiProperty({
     type: Number,
     description: 'Id do Projeto',

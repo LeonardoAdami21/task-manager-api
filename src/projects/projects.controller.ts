@@ -64,11 +64,11 @@ export class ProjectsController {
   @Role('MANAGER')
   @Patch(':id')
   update(
-    @Request() req: { user: { id: number } },
+
     @Body() dto: CreateProjectDto,
     @Param('id') id: number,
   ) {
-    return this.projectsService.update(id, dto, req.user.id);
+    return this.projectsService.update(+id, dto);
   }
 
   @ApiOkResponse({ description: 'Project found successfully' })
@@ -76,7 +76,7 @@ export class ProjectsController {
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Get(':id')
   findById(@Param('id') id: number) {
-    return this.projectsService.findById(id);
+    return this.projectsService.findById(+id);
   }
 
   @ApiOkResponse({ description: 'Project deleted successfully' })
@@ -87,7 +87,7 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Role('MANAGER')
   @Delete(':id')
-  delete(@Request() req: { user: { id: number } }, @Param('id') id: number) {
-    return this.projectsService.delete(id, req.user.id);
+  delete(@Param('id') id: number, @Request() req: { user: { id: number } }) {
+    return this.projectsService.delete(+id, req.user.id);
   }
 }
